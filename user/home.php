@@ -1,12 +1,7 @@
 <?php
 require_once '../koneksi/conn.php';
 require_once '../../auth.php';
-requireLogin('users');
-
-// $nim = $_SESSION['users']['admin'];  // ini NIM-nya
-// $query = "SELECT * FROM pengajuan WHERE nim = '$nim'";
-// $result = mysqli_query($conn, $query);
-// $data = mysqli_fetch_assoc($result);
+requireLogin('user');
 ?>
 
 <!DOCTYPE html>

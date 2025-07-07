@@ -1,14 +1,19 @@
 <?php
+// Mulai session jika belum dimulai
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-// Koneksi ke database umum
-$conn = mysqli_connect("localhost", "root", "", "petani");
 
+// Koneksi ke database
+require_once 'koneksi/conn.php';
+
+/**
+ * Fungsi redirect berdasarkan role
+ */
 function redirectToRole($role) {
     if ($role === 'admin') {
         header("Location: /uas_web/admin/dashboard.php");
-    } elseif ($role === 'users') {
+    } elseif ($role === 'user' || $role === 'users') {
         header("Location: /uas_web/user/home.php");
     } else {
         header("Location: /uas_web/index.php?error=Role tidak dikenali");
@@ -16,14 +21,21 @@ function redirectToRole($role) {
     exit;
 }
 
-
-
+/**
+ * Proses login jika request POST
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $role     = $_POST['role'] ?? '';
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+    $role     = trim($_POST['role'] ?? '');
 
-    $query = "SELECT * FROM users WHERE username='$username' AND role='$role' LIMIT 1";
+    if ($username === '' || $password === '' || $role === '') {
+        header("Location: index.php?error=Harap isi semua kolom");
+        exit;
+    }
+
+    // Query mencari user berdasarkan username dan role
+    $query = "SELECT * FROM users WHERE username = '$username' AND role = '$role' LIMIT 1";
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
@@ -31,23 +43,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($user = mysqli_fetch_assoc($result)) {
-        // Tanpa hash (hanya cocokkan teks biasa)
+        // Bandingkan password (sederhana — belum pakai hash)
         if ($password === $user['password']) {
             $_SESSION['user'] = $user;
             redirectToRole($user['role']);
         } else {
-            header("Location: ../index.php?error=Password salah");
+            header("Location: index.php?error=Password salah");
             exit;
         }
     } else {
-        header("Location: ../index.php?error=User tidak ditemukan");
+        header("Location: index.php?error=User tidak ditemukan");
         exit;
     }
 }
 
-
-
-// Untuk halaman lain: cek login
+/**
+ * Fungsi pengecekan login untuk digunakan di halaman lain
+ */
 function requireLogin($expectedRole) {
     if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== $expectedRole) {
         session_destroy();
@@ -55,5 +67,4 @@ function requireLogin($expectedRole) {
         exit;
     }
 }
-//perlu logout dlu setelah masuk
 ?>
