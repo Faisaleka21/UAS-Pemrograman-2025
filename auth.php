@@ -27,15 +27,14 @@ function redirectToRole($role) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
-    $role     = trim($_POST['role'] ?? '');
 
-    if ($username === '' || $password === '' || $role === '') {
+    if ($username === '' || $password === '') {
         header("Location: index.php?error=Harap isi semua kolom");
         exit;
     }
 
-    // Query mencari user berdasarkan username dan role
-    $query = "SELECT * FROM users WHERE username = '$username' AND role = '$role' LIMIT 1";
+    // Cari berdasarkan username saja
+    $query = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
@@ -43,10 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($user = mysqli_fetch_assoc($result)) {
-        // Bandingkan password (sederhana — belum pakai hash)
         if ($password === $user['password']) {
             $_SESSION['user'] = $user;
-            redirectToRole($user['role']);
+            redirectToRole($user['role']); // masih arahkan berdasarkan role
         } else {
             header("Location: index.php?error=Password salah");
             exit;
@@ -56,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
 
 /**
  * Fungsi pengecekan login untuk digunakan di halaman lain
@@ -67,4 +66,5 @@ function requireLogin($expectedRole) {
         exit;
     }
 }
+
 ?>

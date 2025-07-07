@@ -2,7 +2,7 @@
 session_start();
 require_once 'auth.php';
 
-// Jika user sudah login, langsung redirect
+// Jika user sudah login, arahkan sesuai role
 if (isset($_SESSION['user'])) {
     redirectToRole($_SESSION['user']['role']);
 }
@@ -10,6 +10,7 @@ if (isset($_SESSION['user'])) {
 // Tangkap error dari URL (jika ada)
 $errorMsg = $_GET['error'] ?? '';
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -79,13 +80,6 @@ $errorMsg = $_GET['error'] ?? '';
             <p class="text-gray-600 mb-8 text-center">Kelola informasi harga pangan terkini untuk desa Anda</p>
 
             <form method="post" action="auth.php" class="space-y-6">
-                <div>
-                    <label for="role" class="block text-gray-700 font-medium mb-1">Login Sebagai</label>
-                    <select id="role" name="role" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none">
-                        <option value="petani">Petani</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
 
                 <div>
                     <label for="username" class="block text-gray-700 font-medium mb-1">Username</label>
