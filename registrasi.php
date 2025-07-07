@@ -83,8 +83,8 @@
                 <div>
                     <label for="role" class="block text-gray-700 font-medium mb-1">Daftar Sebagai</label>
                     <select id="role" name="role" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none">
-                        <option value="users">Admin</option>
-                        <option value="admin">Petani</option>
+                        <option value="petani">petani</option>
+                        <option value="admin">admin</option>
                     </select>
                 </div>
                  <div>
