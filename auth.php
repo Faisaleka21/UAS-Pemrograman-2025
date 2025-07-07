@@ -13,7 +13,7 @@ require_once 'koneksi/conn.php';
 function redirectToRole($role) {
     if ($role === 'admin') {
         header("Location: /uas_web/admin/dashboard.php");
-    } elseif ($role === 'user' || $role === 'users') {
+    } elseif ($role === 'petani') {
         header("Location: /uas_web/user/home.php");
     } else {
         header("Location: /uas_web/index.php?error=Role tidak dikenali");

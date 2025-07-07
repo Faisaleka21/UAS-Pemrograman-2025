@@ -68,6 +68,7 @@ $errorMsg = $_GET['error'] ?? '';
 
         <!-- Kanan - Form Login -->
         <div class="w-full md:w-1/2 p-10">
+            <!-- pesaaaaaaan  -->
             <?php if ($errorMsg): ?>
                 <div class="bg-red-100 text-red-700 px-4 py-3 rounded mb-6 text-center">
                     <?= htmlspecialchars($errorMsg) ?>
@@ -81,7 +82,7 @@ $errorMsg = $_GET['error'] ?? '';
                 <div>
                     <label for="role" class="block text-gray-700 font-medium mb-1">Login Sebagai</label>
                     <select id="role" name="role" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none">
-                        <option value="user">Petani</option>
+                        <option value="petani">Petani</option>
                         <option value="admin">Admin</option>
                     </select>
                 </div>

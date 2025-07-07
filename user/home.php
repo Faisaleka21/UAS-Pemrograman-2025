@@ -1,6 +1,6 @@
 <?php
 require_once '../koneksi/conn.php';
-require_once '../../auth.php';
+require_once '../auth.php';
 requireLogin('user');
 ?>
 
