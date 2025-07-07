@@ -6,7 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>coba</h1>
-    <p>tesssssss</p> 
+    <h1>sek tak gae</h1>
 </body>
 </html>
