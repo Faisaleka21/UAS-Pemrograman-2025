@@ -83,17 +83,18 @@
                 <div>
                     <label for="role" class="block text-gray-700 font-medium mb-1">Daftar Sebagai</label>
                     <select id="role" name="role" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none">
-                        <option value="users">User</option>
-                        <option value="admin">Admin</option>
+                        <option value="users">Admin</option>
+                        <option value="admin">Petani</option>
                     </select>
                 </div>
+                 <div>
+                    <label for="nama" class="block text-gray-700 font-medium mb-1">nama</label>
+                    <input type="text" id="nama" name="nama" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="contoh: bambang paisal">
+                </div>
+                <div>
                 <div>
                     <label for="username" class="block text-gray-700 font-medium mb-1">Username</label>
                     <input type="text" id="username" name="username" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="contoh: petani@desa.id">
-                </div>
-                <div>
-                    <label for="email" class="block text-gray-700 font-medium mb-1">Email</label>
-                    <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="contoh: email@domain.com">
                 </div>
                 <div>
                     <label for="password" class="block text-gray-700 font-medium mb-1">Password</label>
@@ -124,11 +125,10 @@
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm_password').value;
 
-            if (!username || !email || !password || !confirmPassword) {
+            if (!username || !password || !confirmPassword) {
                 alert('Semua field wajib diisi!');
                 e.preventDefault();
                 return;
