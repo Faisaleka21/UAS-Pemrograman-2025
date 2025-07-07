@@ -68,47 +68,50 @@
             <p class="text-center text-indigo-100">Sistem Informasi Harga Pangan Real-Time untuk Petani Indonesia</p>
         </div>
         
-        <!-- Right Side - Form -->
+        <!-- Right Side - Registration Form -->
         <div class="w-full md:w-1/2 p-10">
             <div class="flex justify-center mb-6 md:hidden">
                 <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/22b5fe39-1352-4a07-ab72-bf2a7e42700a.png" alt="Logo HargaPangan Desa - Siluet petani dengan grafik pertumbuhan" class="h-12"/>
             </div>
             
-            <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Masuk ke Akun Anda</h1>
-            <p class="text-gray-600 mb-8 text-center">Kelola informasi harga pangan terkini untuk desa Anda</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Daftar Akun Baru</h1>
+            <p class="text-gray-600 mb-8 text-center">Buat akun untuk mengelola harga pangan desa Anda</p>
             
-            <form id="loginForm" class="space-y-6">
+            <!-- Registration form -->
+            <form method="post" action="register_process.php" id="registerForm" class="space-y-6">
                 <div>
-                    <label for="email" class="block text-gray-700 font-medium mb-1">Email atau Nomor HP</label>
-                    <input type="text" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="contoh: petani@desa.id">
+                    <label for="role" class="block text-gray-700 font-medium mb-1">Daftar Sebagai</label>
+                    <select id="role" name="role" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none">
+                        <option value="users">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
                 </div>
-                
-                <div class="relative">
+                <div>
+                    <label for="username" class="block text-gray-700 font-medium mb-1">Username</label>
+                    <input type="text" id="username" name="username" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="contoh: petani@desa.id">
+                </div>
+                <div>
+                    <label for="email" class="block text-gray-700 font-medium mb-1">Email</label>
+                    <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="contoh: email@domain.com">
+                </div>
+                <div>
                     <label for="password" class="block text-gray-700 font-medium mb-1">Password</label>
                     <input type="password" id="password" name="password" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="Masukkan password">
-                    <button type="button" class="absolute right-3 top-10 text-gray-500 hover:text-indigo-600" onclick="togglePasswordVisibility()">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
                 </div>
-                
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                        <label for="remember" class="ml-2 block text-sm text-gray-700">Ingat saya</label>
-                    </div>
-                    <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">Lupa password?</a>
+                <div>
+                    <label for="confirm_password" class="block text-gray-700 font-medium mb-1">Konfirmasi Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none" placeholder="Ulangi password">
                 </div>
-                
                 <button type="submit" class="w-full py-3 px-4 rounded-lg text-white font-semibold btn-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Masuk
+                    Daftar
                 </button>
             </form>
+            <!-- Registration form end -->
             
             <div class="mt-6 text-center">
-                <p class="text-sm text-gray-600">Belum memiliki akun? <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Daftar sekarang</a></p>
+                <p class="text-sm text-gray-600">Sudah punya akun? 
+                    <a href="index.php" class="font-medium text-indigo-600 hover:text-indigo-500">Masuk di sini</a>
+                    </p>
             </div>
             
             <div class="mt-8 border-t border-gray-200 pt-6">
@@ -118,30 +121,22 @@
     </div>
 
     <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-            } else {
-                passwordInput.type = 'password';
-            }
-        }
-        
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            
-            // Simple validation
-            if (!email || !password) {
-                alert('Silakan isi email dan password');
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (!username || !email || !password || !confirmPassword) {
+                alert('Semua field wajib diisi!');
+                e.preventDefault();
                 return;
             }
-            
-            // Simulate login process
-            console.log('Login attempted with:', { email, password });
-            alert('Login berhasil! Redirecting...');
-            // In a real app, you would send this to your backend
+            if (password !== confirmPassword) {
+                alert('Password dan konfirmasi password tidak sama!');
+                e.preventDefault();
+                return;
+            }
         });
     </script>
 </body>
