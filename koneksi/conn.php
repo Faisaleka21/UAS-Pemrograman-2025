@@ -1,12 +1,12 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "petani";
+  define('DB_SERVER', 'localhost');
+  define('DB_USERNAME', 'root');
+  define('DB_PASSWORD', '');
+  define('DB_NAME', 'petani');
 
-$conn = mysqli_connect($host, $user, $pass, $db);
+  $conn = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
-if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
-}
+  if ($conn === false) {
+      die("ERROR: Could not connect. " . mysqli_connect_error());
+  }
 ?>
