@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Koneksi ke database
 require_once 'koneksi/conn.php';
-
+   
 /**
  * Fungsi redirect berdasarkan role
  */

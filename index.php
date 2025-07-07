@@ -10,7 +10,7 @@ if (isset($_SESSION['user'])) {
 // Tangkap error dari URL (jika ada)
 $errorMsg = $_GET['error'] ?? '';
 ?>
-
+  
 <!DOCTYPE html>
 <html lang="id">
 <head>
