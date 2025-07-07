@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -78,7 +79,7 @@
             <p class="text-gray-600 mb-8 text-center">Buat akun untuk mengelola harga pangan desa Anda</p>
             
             <!-- Registration form -->
-            <form method="post" action="register_process.php" id="registerForm" class="space-y-6">
+            <form method="post" action="koneksi/add.php" id="registerForm" class="space-y-6">
                 <div>
                     <label for="role" class="block text-gray-700 font-medium mb-1">Daftar Sebagai</label>
                     <select id="role" name="role" class="w-full px-4 py-3 rounded-lg border border-gray-300 input-field focus:outline-none">
