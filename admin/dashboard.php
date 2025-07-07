@@ -78,7 +78,7 @@ requireLogin('admin');
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 rounded hover:bg-purple-600">
+                    <a href="../logout.php" class="flex items-center p-2 rounded hover:bg-purple-600">
                         <i class="fas fa-sign-out-alt icon"></i>
                         Keluar
                     </a>
