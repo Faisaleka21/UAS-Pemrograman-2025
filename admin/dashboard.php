@@ -60,7 +60,7 @@ requireLogin('admin');
                     </a>
                 </li>
                 <li class="mb-4">
-                    <a href="#" class="flex items-center p-2 rounded hover:bg-purple-600">
+                    <a href="pengguna.php" class="flex items-center p-2 rounded hover:bg-purple-600">
                         <i class="fas fa-users icon"></i>
                         Kelola Pengguna
                     </a>
@@ -151,6 +151,8 @@ requireLogin('admin');
             </table>
         </div>
     </div>
+
+    
 
     <script>
         const ctx = document.getElementById('priceChart').getContext('2d');

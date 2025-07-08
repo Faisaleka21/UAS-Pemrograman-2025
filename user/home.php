@@ -90,7 +90,45 @@ requireLogin('petani');
         <span id="lastUpdate" class="text-sm opacity-80"></span>
       </div>
     </div>
+
+    <nav class="bg-secondary bg-opacity-90">
+      <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+        <ul class="flex space-x-6 font-medium">
+          <li>
+            <a href="home.php" class="hover:text-accent transition flex items-center">
+              <i class="fas fa-home mr-1"></i> Beranda
+            </a>
+          </li>
+          <li>
+            <a href="harga.php" class="hover:text-accent transition flex items-center">
+              <i class="fas fa-tags mr-1"></i> Harga Komoditas
+            </a>
+          </li>
+          <li>
+            <a href="pasar.php" class="hover:text-accent transition flex items-center">
+              <i class="fas fa-store mr-1"></i> Info Pasar
+            </a>
+          </li>
+          <li>
+            <a href="notifikasi.php" class="hover:text-accent transition flex items-center">
+              <i class="fas fa-bell mr-1"></i> Notifikasi
+            </a>
+          </li>
+          <li>
+            <a href="tentang.php" class="hover:text-accent transition flex items-center">
+              <i class="fas fa-info-circle mr-1"></i> Tentang
+            </a>
+          </li>
+        </ul>
+        <div>
+          <a href="../logout.php" class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded transition flex items-center">
+            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+          </a>
+        </div>
+      </div>
+    </nav>
   </header>
+<!-- header end -->
 
   <!-- Hero Section -->
   <section class="bg-gradient-to-r from-primary to-secondary text-white py-12 px-4">

@@ -1,6 +1,7 @@
 <?php
 require_once 'conn.php';
 
+// registrasi
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nama     = $_POST['nama'];
     $username = $_POST['username'];
