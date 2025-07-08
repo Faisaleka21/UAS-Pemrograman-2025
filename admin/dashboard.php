@@ -117,10 +117,12 @@ requireLogin('admin');
         </div>
 
         <div class="card p-6">
-            <h2 class="text-xl font-semibold mb-4">Daftar Pengguna</h2>
+            <h2 class="text-xl font-semibold mb-4">Daftar Pengguna Terbaru</h2>
             <table class="min-w-full table-auto">
                 <thead>
                     <tr class="bg-gray-200">
+                        <th class="px-4 py-2">No</th>
+                        <th class="px-4 py-2">Nama</th>
                         <th class="px-4 py-2">Username</th>
                         <th class="px-4 py-2">Role</th>
                         <th class="px-4 py-2">Status</th>
@@ -128,25 +130,38 @@ requireLogin('admin');
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="border px-4 py-2">petani@desa.id</td>
-                        <td class="border px-4 py-2">User </td>
-                        <td class="border px-4 py-2">Aktif</td>
-                        <td class="border px-4 py-2">
-                            <button class="text-indigo-600 hover:text-indigo-500">Edit</button>
-                            <button class="text-red-600 hover:text-red-500">Hapus</button>
+                     <?php 
+                        require_once __DIR__. "/../koneksi/conn.php";
+                        $sql_query = "SELECT * FROM users ORDER BY id_users DESC LIMIT 3"; // query untuk mengambil data dari tabel dokter
+                        if ($result = $conn ->query($sql_query)) {
+                            while ($row = $result -> fetch_assoc()) { 
+                                $id = $row['id_users'];  //yg dlm kurung siku disamakan harus sesuai nama kolom di database
+                                $name = $row['nama'];
+                                $username = $row['username'];
+                                $password = $row['password'];
+                                $role = $row['role'];
+                    ?>
+                    
+                    <tr class="trow">
+                        <td class="px-4 py-2 text-center"><?php echo $id; ?></td>
+                        <td class="px-4 py-2"><?php echo $name; ?></td>
+                        <td class="px-4 py-2"><?php echo $username; ?></td>
+                        <td class="px-4 py-2"><?php echo $password; ?></td>
+                        <td class="px-4 py-2 text-center"><?php echo $role; ?></td>
+                        <td class="px-4 py-2 text-center">
+                            <a href="update.php?id=<?php echo $id; ?>" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-1 px-3 rounded mr-2 transition duration-200" title="Edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="delete.php?id=<?php echo $id; ?>" class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition duration-200" title="Delete" onclick="return confirm('Yakin ingin menghapus pengguna ini?');">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="border px-4 py-2">admin@desa.id</td>
-                        <td class="border px-4 py-2">Admin</td>
-                        <td class="border px-4 py-2">Aktif</td>
-                        <td class="border px-4 py-2">
-                            <button class="text-indigo-600 hover:text-indigo-500">Edit</button>
-                            <button class="text-red-600 hover:text-red-500">Hapus</button>
-                        </td>
-                    </tr>
-                    <!-- Tambahkan lebih banyak pengguna di sini -->
+
+                    <?php
+                            } 
+                        } 
+                    ?>
                 </tbody>
             </table>
         </div>
