@@ -3,6 +3,28 @@ require_once '../koneksi/conn.php';
 require_once '../auth.php';
 requireLogin('petani');
 ?>
+ <!-- data insight -->
+<?php
+// Ambil data harga terbaru per grade per komoditas
+$query = "
+    SELECT c.nama AS komoditas, g.nama_grade, cp.harga, cp.tanggal 
+    FROM commodity_prices cp
+    INNER JOIN grades g ON cp.grade_id = g.id
+    INNER JOIN commodities c ON g.commodity_id = c.id
+    WHERE cp.tanggal = (
+        SELECT MAX(tanggal)
+        FROM commodity_prices cp2
+        WHERE cp2.grade_id = cp.grade_id
+    )
+    ORDER BY c.nama, g.nama_grade;
+";
+
+$result = mysqli_query($conn, $query);
+$data_terbaru = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $data_terbaru[] = $row;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -11,7 +33,17 @@ requireLogin('petani');
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HargaPangan Desa - Sistem Informasi Harga Pangan Real-Time untuk Petani</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- DataTables Bootstrap 5 CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <script>
     tailwind.config = {
       theme: {
@@ -105,16 +137,6 @@ requireLogin('petani');
             </a>
           </li>
           <li>
-            <a href="pasar.php" class="hover:text-accent transition flex items-center">
-              <i class="fas fa-store mr-1"></i> Info Pasar
-            </a>
-          </li>
-          <li>
-            <a href="notifikasi.php" class="hover:text-accent transition flex items-center">
-              <i class="fas fa-bell mr-1"></i> Notifikasi
-            </a>
-          </li>
-          <li>
             <a href="tentang.php" class="hover:text-accent transition flex items-center">
               <i class="fas fa-info-circle mr-1"></i> Tentang
             </a>
@@ -142,283 +164,40 @@ requireLogin('petani');
       </div>
     </div>
   </section>
+  <!-- insight Section -->
+ <section id="insight" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">Insight Harga Terbaru</h2>
 
-  <!-- Main Content -->
-  <main class="container mx-auto px-4 py-8">
-    <!-- Price Overview Cards -->
-    <section class="mb-12">
-      <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-        <i class="fas fa-chart-line mr-3 text-primary"></i>
-        Ringkasan Harga Hari Ini
-      </h3>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Beras -->
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition cursor-pointer">
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-lg text-gray-800">Beras</h4>
-              <p class="text-gray-600 text-sm">Medium</p>
-            </div>
-            <i class="fas fa-rice text-3xl text-primary"></i>
-          </div>
-          <div class="mt-4">
-            <p class="text-2xl font-bold">Rp12,500</p>
-            <p class="text-sm flex items-center mt-1">
-              <span class="price-up mr-1"><i class="fas fa-arrow-up"></i> 2.5%</span>
-              <span class="text-gray-600 ml-2">dari kemarin</span>
-            </p>
-          </div>
-          <div class="chart-container mt-4 flex space-x-1 items-end">
-            <div class="chart-bar" style="height:40%"></div>
-            <div class="chart-bar" style="height:60%"></div>
-            <div class="chart-bar" style="height:75%"></div>
-            <div class="chart-bar" style="height:100%"></div>
-            <div class="chart-bar" style="height:80%"></div>
-          </div>
-        </div>
-        
-        <!-- Cabai Merah -->
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition cursor-pointer">
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-lg text-gray-800">Cabai Merah</h4>
-              <p class="text-gray-600 text-sm">Kualitas A</p>
-            </div>
-            <i class="fas fa-pepper-hot text-3xl text-red-500"></i>
-          </div>
-          <div class="mt-4">
-            <p class="text-2xl font-bold">Rp35,000</p>
-            <p class="text-sm flex items-center mt-1">
-              <span class="price-down mr-1"><i class="fas fa-arrow-down"></i> 5.2%</span>
-              <span class="text-gray-600 ml-2">dari kemarin</span>
-            </p>
-          </div>
-          <div class="chart-container mt-4 flex space-x-1 items-end">
-            <div class="chart-bar" style="height:100%"></div>
-            <div class="chart-bar" style="height:95%"></div>
-            <div class="chart-bar" style="height:85%"></div>
-            <div class="chart-bar" style="height:70%"></div>
-            <div class="chart-bar" style="height:60%"></div>
-          </div>
-        </div>
-        
-        <!-- Bawang Merah -->
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition cursor-pointer">
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-lg text-gray-800">Bawang Merah</h4>
-              <p class="text-gray-600 text-sm">Lokal</p>
-            </div>
-            <i class="fas fa-onion text-3xl text-purple-500"></i>
-          </div>
-          <div class="mt-4">
-            <p class="text-2xl font-bold">Rp27,800</p>
-            <p class="text-sm flex items-center mt-1">
-              <span class="price-stable mr-1"><i class="fas fa-equals"></i></span>
-              <span class="text-gray-600 ml-2">stabil</span>
-            </p>
-          </div>
-          <div class="chart-container mt-4 flex space-x-1 items-end">
-            <div class="chart-bar" style="height:90%"></div>
-            <div class="chart-bar" style="height:85%"></div>
-            <div class="chart-bar" style="height:87%"></div>
-            <div class="chart-bar" style="height:88%"></div>
-            <div class="chart-bar" style="height:90%"></div>
-          </div>
-        </div>
-        
-        <!-- Jagung -->
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition cursor-pointer">
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-lg text-gray-800">Jagung</h4>
-              <p class="text-gray-600 text-sm">Kualitas B</p>
-            </div>
-            <i class="fas fa-corn text-3xl text-yellow-600"></i>
-          </div>
-          <div class="mt-4">
-            <p class="text-2xl font-bold">Rp7,200</p>
-            <p class="text-sm flex items-center mt-1">
-              <span class="price-up mr-1"><i class="fas fa-arrow-up"></i> 1.8%</span>
-              <span class="text-gray-600 ml-2">dari kemarin</span>
-            </p>
-          </div>
-          <div class="chart-container mt-4 flex space-x-1 items-end">
-            <div class="chart-bar" style="height:70%"></div>
-            <div class="chart-bar" style="height:65%"></div>
-            <div class="chart-bar" style="height:75%"></div>
-            <div class="chart-bar" style="height:80%"></div>
-            <div class="chart-bar" style="height:85%"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Full Price Table -->
-    <section class="mb-12">
-      <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-        <i class="fas fa-table mr-3 text-primary"></i>
-        Daftar Lengkap Harga Komoditas
-      </h3>
-      
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="min-w-full">
-            <thead class="bg-primary text-white">
-              <tr>
-                <th class="py-3 px-4 text-left">No</th>
-                <th class="py-3 px-4 text-left">Komoditas</th>
-                <th class="py-3 px-4 text-left">Kualitas</th>
-                <th class="py-3 px-4 text-right">Harga (Rp)</th>
-                <th class="py-3 px-4 text-right">Perubahan</th>
-                <th class="py-3 px-4 text-left">Pasar</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr>
-                <td class="py-3 px-4">1</td>
-                <td class="py-3 px-4 font-medium">Beras</td>
-                <td class="py-3 px-4">Medium</td>
-                <td class="py-3 px-4 text-right">12,500</td>
-                <td class="py-3 px-4 text-right price-up"><i class="fas fa-arrow-up mr-1"></i> 2.5%</td>
-                <td class="py-3 px-4">Pasar Induk</td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="py-3 px-4">2</td>
-                <td class="py-3 px-4 font-medium">Cabai Merah</td>
-                <td class="py-3 px-4">Kualitas A</td>
-                <td class="py-3 px-4 text-right">35,000</td>
-                <td class="py-3 px-4 text-right price-down"><i class="fas fa-arrow-down mr-1"></i> 5.2%</td>
-                <td class="py-3 px-4">Pasar Desa</td>
-              </tr>
-              <tr>
-                <td class="py-3 px-4">3</td>
-                <td class="py-3 px-4 font-medium">Bawang Merah</td>
-                <td class="py-3 px-4">Lokal</td>
-                <td class="py-3 px-4 text-right">27,800</td>
-                <td class="py-3 px-4 text-right price-stable"><i class="fas fa-equals mr-1"></i> stabil</td>
-                <td class="py-3 px-4">Pasar Induk</td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="py-3 px-4">4</td>
-                <td class="py-3 px-4 font-medium">Jagung</td>
-                <td class="py-3 px-4">Kualitas B</td>
-                <td class="py-3 px-4 text-right">7,200</td>
-                <td class="py-3 px-4 text-right price-up"><i class="fas fa-arrow-up mr-1"></i> 1.8%</td>
-                <td class="py-3 px-4">Pasar Desa</td>
-              </tr>
-              <tr>
-                <td class="py-3 px-4">5</td>
-                <td class="py-3 px-4 font-medium">Kedelai</td>
-                <td class="py-3 px-4">Lokal</td>
-                <td class="py-3 px-4 text-right">9,500</td>
-                <td class="py-3 px-4 text-right price-down"><i class="fas fa-arrow-down mr-1"></i> 3.1%</td>
-                <td class="py-3 px-4">Pasar Induk</td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="py-3 px-4">6</td>
-                <td class="py-3 px-4 font-medium">Gula Pasir</td>
-                <td class="py-3 px-4">Rafinasi</td>
-                <td class="py-3 px-4 text-right">14,300</td>
-                <td class="py-3 px-4 text-right price-stable"><i class="fas fa-equals mr-1"></i> stabil</td>
-                <td class="py-3 px-4">Pasar Induk</td>
-              </tr>
-              <tr>
-                <td class="py-3 px-4">7</td>
-                <td class="py-3 px-4 font-medium">Minyak Goreng</td>
-                <td class="py-3 px-4">Kemasan</td>
-                <td class="py-3 px-4 text-right">18,000</td>
-                <td class="py-3 px-4 text-right price-up"><i class="fas fa-arrow-up mr-1"></i> 0.9%</td>
-                <td class="py-3 px-4">Pasar Desa</td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="py-3 px-4">8</td>
-                <td class="py-3 px-4 font-medium">Telur Ayam</td>
-                <td class="py-3 px-4">Ras</td>
-                <td class="py-3 px-4 text-right">26,500</td>
-                <td class="py-3 px-4 text-right price-down"><i class="fas fa-arrow-down mr-1"></i> 2.3%</td>
-                <td class="py-3 px-4">Pasar Desa</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Price Trends Section -->
-    <section class="mb-12">
-      <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-        <i class="fas fa-chart-area mr-3 text-primary"></i>
-        Tren Harga 7 Hari Terakhir
-      </h3>
-      
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="flex flex-wrap -mx-4">
-          <div class="w-full md:w-1/2 px-4 mb-6 md:mb-0">
-            <h4 class="text-lg font-semibold text-gray-800 mb-4">Beras (Rp/kg)</h4>
-            <div class="chart-container" id="berasChart"></div>
-          </div>
-          <div class="w-full md:w-1/2 px-4">
-            <h4 class="text-lg font-semibold text-gray-800 mb-4">Cabai Merah (Rp/kg)</h4>
-            <div class="chart-container" id="cabeChart"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Market Info Section -->
-    <section class="mb-12">
-      <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-        <i class="fas fa-store mr-3 text-primary"></i>
-        Informasi Pasar Terkini
-      </h3>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cb3b7a54-87bb-47c7-abb9-0db50c0a117c.png" alt="Pasar tradisional yang sibuk dengan para pedagang dan pembeli, berbagai sayuran dan buah terlihat segar di atas meja" class="w-full h-48 object-cover" />
-          <div class="p-6">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">Pasar Induk Desa</h4>
-            <p class="text-gray-600 mb-4">Update terakhir: Hari ini, 08.45 WIB</p>
-            <p class="text-gray-700">Harga cenderung stabil untuk komoditas pokok, dengan peningkatan permintaan pada beras dan minyak goreng.</p>
-          </div>
-        </div>
-        
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1cd4981c-6e3a-481c-9cc8-f6be24d21153.png" alt="Pasar desa sederhana dengan para petani menjual hasil tani langsung, suasana ramah dan alami" class="w-full h-48 object-cover" />
-          <div class="p-6">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">Pasar Tani Desa</h4>
-            <p class="text-gray-600 mb-4">Update terakhir: Hari ini, 09.30 WIB</p>
-            <p class="text-gray-700">Pasokan cabai merah meningkat menyebabkan penurunan harga, sedangkan bawang merah tetap stabil.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Notification Section -->
-    <section class="mb-12">
-      <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-        <i class="fas fa-bell mr-3 text-primary"></i>
-        Notifikasi Harga
-      </h3>
-      
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="flex items-center justify-between mb-4">
-          <p class="font-medium">Dapatkan notifikasi saat harga komoditas Anda berubah</p>
-          <button class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded-md transition">
-            Aktifkan Notifikasi
-          </button>
-        </div>
-        
-        <div class="relative">
-          <input type="text" placeholder="Masukkan email atau nomor WhatsApp Anda" class="w-full p-4 pr-32 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" />
-          <button class="absolute right-2 top-2 bg-primary text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
-            Daftar
-          </button>
-        </div>
-      </div>
-    </section>
-    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped" id="insightTable">
+        <thead class="table-dark">
+          <tr>
+            <th>No</th>
+            <th>Komoditas</th>
+            <th>Grade</th>
+            <th>Harga (Rp)</th>
+            <th>Tanggal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $no = 1;
+          foreach ($data_terbaru as $row): ?>
+          <tr>
+            <td><?= $no++ ?></td>
+            <td><?= $row['komoditas'] ?></td>
+            <td><?= $row['nama_grade'] ?></td>
+            <td><?= number_format($row['harga'], 0, ',', '.') ?></td>
+            <td><?= $row['tanggal'] ?></td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
     <!-- About Section -->
     <section class="mb-12 bg-primary bg-opacity-10 rounded-lg p-6">
       <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
@@ -594,6 +373,39 @@ requireLogin('petani');
       });
     }
   </script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#insightTable').DataTable({
+      pageLength: 5,
+      lengthMenu: [5, 10, 20],
+      language: {
+        search: "Cari:",
+        lengthMenu: "Tampilkan _MENU_ baris",
+        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        paginate: {
+          previous: "Sebelumnya",
+          next: "Berikutnya"
+        }
+      }
+    });
+  });
+</script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables + Bootstrap 5 integration -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
 </body>
 </html>
 
