@@ -5,8 +5,6 @@ requireLogin('petani');
 ?>
  <!-- data insight -->
 <?php
-include '../koneksi.php';
-
 // Ambil data harga terbaru per grade per komoditas
 $query = "
     SELECT c.nama AS komoditas, g.nama_grade, cp.harga, cp.tanggal 
