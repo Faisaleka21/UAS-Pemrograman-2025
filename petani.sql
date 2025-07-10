@@ -146,7 +146,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `nama`, `username`, `password`, `role`) VALUES
 (1, 'admin', 'admin', '123', 'admin'),
 (2, 'Pak Budi', 'budi', 'budi123', 'petani'),
-(3, 'jono', 'sari', 'jono123', 'pedagang');
+(3, 'jono', 'sari', 'jono123', 'petani');
 
 --
 -- Indexes for dumped tables
