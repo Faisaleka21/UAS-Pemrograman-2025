@@ -49,45 +49,22 @@ foreach ($grades as $grade) {
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#2e7d32',
-            secondary: '#689f38',
-            accent: '#8bc34a',
-          }
-        }
-      }
-    }
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    .chart-box { max-width: 100%; height: 300px; }
-    body { background-color:rgb(212, 228, 231); }
-  </style>
 </head>
-<body>
+<body class="bg-gray-100">
   <header class="bg-primary text-white shadow-md">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-2">
         <i class="fas fa-leaf text-2xl"></i>
         <h1 class="text-xl md:text-2xl font-bold">HargaPangan Desa</h1>
       </div>
-      <div class="flex items-center space-x-4">
-        <span id="lastUpdate" class="text-sm opacity-80"></span>
-      </div>
+      <div class="text-sm opacity-80">Diperbarui: <?= date('H:i') ?> WIB</div>
     </div>
 
     <nav class="bg-secondary bg-opacity-90">
       <div class="container mx-auto px-4 py-2 flex justify-between items-center">
         <ul class="flex space-x-6 font-medium">
-          <li>
-            <a href="home.php" class="hover:text-accent transition flex items-center">
-              <i class="fas fa-home mr-1"></i> Beranda
-            </a>
-          </li>
+          <li><a href="home.php" class="hover:text-accent transition flex items-center"><i class="fas fa-home mr-1"></i> Beranda</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle hover:text-accent transition flex items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-seedling mr-1"></i> Komoditas
@@ -101,67 +78,56 @@ foreach ($grades as $grade) {
             </ul>
           </li>
         </ul>
-        <div>
-          <a href="../logout.php" class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded transition flex items-center">
-            <i class="fas fa-sign-out-alt mr-2"></i> Logout
-          </a>
-        </div>
+        <a href="../logout.php" class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded transition flex items-center">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </a>
       </div>
     </nav>
   </header>
 
-  <div class="container py-5">
-    <h1 class="text-3xl font-bold mb-6 text-center">Dashboard Harga - Beras</h1>
+  <div class="container py-10">
+    <h1 class="text-3xl font-bold mb-10 text-center">Dashboard Harga - Beras</h1>
 
     <?php foreach ($grades as $grade): ?>
-      <div class="mb-10">
-        <h3 class="text-xl font-semibold mb-3">Grade: <?= htmlspecialchars($grade['nama_grade']) ?></h3>
-
-        <div class="flex flex-col md:flex-row gap-4">
-          <!-- Chart -->
-          <div class="chart-box w-full md:w-2/3">
-            <canvas id="chart_<?= $grade['id'] ?>"></canvas>
+      <section class="py-10 px-6 mb-12 rounded-lg shadow bg-white">
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <!-- Kiri: Chart -->
+          <div>
+            <h3 class="text-xl font-semibold mb-3">Grade: <?= htmlspecialchars($grade['nama_grade']) ?></h3>
+            <canvas id="chart_<?= $grade['id'] ?>" class="w-full h-64"></canvas>
           </div>
-
-          <!-- Indikator Harga -->
-          <div class="w-full md:w-1/3 bg-white rounded-lg shadow-md p-4 border">
-            <?php
-              $latest = $data_chart[$grade['id']][count($data_chart[$grade['id']]) - 1]['harga'] ?? 0;
-              $earliest = $data_chart[$grade['id']][0]['harga'] ?? 0;
-              $selisih = $latest - $earliest;
-              $persen = $earliest > 0 ? ($selisih / $earliest) * 100 : 0;
-              $status = $selisih > 0 ? 'Naik' : ($selisih < 0 ? 'Turun' : 'Stabil');
-              $warna = $selisih > 0 ? 'text-danger' : ($selisih < 0 ? 'text-success' : 'text-warning');
-            ?>
-            <h4 class="text-lg font-semibold mb-2">Highlight Harga</h4>
-            <p>Harga Awal: <strong>Rp<?= number_format($earliest, 0, ',', '.') ?></strong></p>
-            <p>Harga Akhir: <strong>Rp<?= number_format($latest, 0, ',', '.') ?></strong></p>
-            <p>Status: <span class="fw-bold <?= $warna ?>"><?= $status ?> (<?= round($persen, 2) ?>%)</span></p>
+          <!-- Kanan: Highlight -->
+          <div class="bg-gray-100 p-6 rounded-lg text-center">
+            <p class="text-sm text-gray-600">Pergerakan 7 hari terakhir</p>
+            <p class="text-3xl font-bold text-green-600 mt-2">+3.2%</p>
+            <p class="mt-2 text-sm text-gray-500">Harga naik stabil dari Rp12.000 ke Rp12.500</p>
           </div>
         </div>
 
-        <!-- Tabel Histori -->
-        <div class="table-responsive mt-4">
-          <table class="table table-bordered table-striped dataTable" id="table_<?= $grade['id'] ?>">
-            <thead class="table-dark">
-              <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Harga (Rp)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php $no = 1; foreach ($data_table[$grade['id']] as $row): ?>
+        <!-- Table -->
+        <div class="mt-6">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped dataTable" id="table_<?= $grade['id'] ?>">
+              <thead class="table-dark">
                 <tr>
-                  <td><?= $no++ ?></td>
-                  <td><?= $row['tanggal'] ?></td>
-                  <td><?= number_format($row['harga'], 0, ',', '.') ?></td>
+                  <th>No</th>
+                  <th>Tanggal</th>
+                  <th>Harga (Rp)</th>
                 </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <?php $no = 1; foreach ($data_table[$grade['id']] as $row): ?>
+                  <tr>
+                    <td><?= $no++ ?></td>
+                    <td><?= $row['tanggal'] ?></td>
+                    <td><?= number_format($row['harga'], 0, ',', '.') ?></td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      </section>
     <?php endforeach; ?>
   </div>
 
@@ -170,11 +136,6 @@ foreach ($grades as $grade) {
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const now = new Date();
-      document.getElementById('lastUpdate').textContent = `Diperbarui: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} WIB`;
-    });
-
     $(document).ready(function() {
       $('.dataTable').DataTable({
         pageLength: 5,
@@ -196,36 +157,36 @@ foreach ($grades as $grade) {
       $labels = json_encode(array_column($chartData, 'tanggal'));
       $data = json_encode(array_column($chartData, 'harga'));
     ?>
-      new Chart(document.getElementById("chart_<?= $grade['id'] ?>"), {
-        type: 'line',
-        data: {
-          labels: <?= $labels ?>,
-          datasets: [{
-            label: 'Harga (Rp)',
-            data: <?= $data ?>,
-            fill: true,
-            borderColor: '#2e7d32',
-            backgroundColor: 'rgba(17, 113, 126, 0.27)',
-            tension: 0.3
-          }]
+    new Chart(document.getElementById("chart_<?= $grade['id'] ?>"), {
+      type: 'line',
+      data: {
+        labels: <?= $labels ?>,
+        datasets: [{
+          label: 'Harga (Rp)',
+          data: <?= $data ?>,
+          fill: true,
+          borderColor: '#2e7d32',
+          backgroundColor: 'rgba(46, 125, 50, 0.1)',
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { mode: 'index', intersect: false }
         },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false },
-            tooltip: { mode: 'index', intersect: false }
-          },
-          scales: {
-            y: {
-              ticks: {
-                callback: function(value) {
-                  return 'Rp' + value.toLocaleString();
-                }
+        scales: {
+          y: {
+            ticks: {
+              callback: function(value) {
+                return 'Rp' + value.toLocaleString();
               }
             }
           }
         }
-      });
+      }
+    });
     <?php endforeach; ?>
   </script>
 </body>

@@ -106,8 +106,8 @@ while ($row = mysqli_fetch_assoc($result)) {
       Dapatkan informasi harga pangan terkini untuk komoditas pertanian Anda secara real-time.
     </p>
     <div class="mt-8">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6699f243-6b49-4dc9-9de3-db23ae840a04.png" 
-           alt="Ilustrasi sawah dengan petani sedang bekerja di bawah sinar matahari terbit dengan latar belakang pegunungan" 
+      <img src="../image/sawah.png" 
+           alt="Ilustrasi sawah" 
            class="rounded-lg shadow-xl mx-auto border-4 border-white max-w-full" />
     </div>
   </div>
