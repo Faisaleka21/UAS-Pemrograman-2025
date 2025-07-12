@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `commodities` (
   `id` int NOT NULL,
   `nama` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `commodities`
@@ -54,7 +54,7 @@ CREATE TABLE `commodity_prices` (
   `grade_id` int DEFAULT NULL,
   `tanggal` date DEFAULT NULL,
   `harga` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `commodity_prices`
@@ -102,7 +102,7 @@ CREATE TABLE `grades` (
   `id` int NOT NULL,
   `commodity_id` int DEFAULT NULL,
   `nama_grade` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `grades`
@@ -111,19 +111,19 @@ CREATE TABLE `grades` (
 INSERT INTO `grades` (`id`, `commodity_id`, `nama_grade`) VALUES
 (1, 1, 'Premium'),
 (2, 1, 'Medium'),
-(3, 1, 'Rendah'),
+(3, 1, 'Ekonomis'),
 (4, 2, 'Premium'),
 (5, 2, 'Medium'),
-(6, 2, 'Rendah'),
+(6, 2, 'Ekonomis'),
 (7, 3, 'Premium'),
 (8, 3, 'Medium'),
-(9, 3, 'Rendah'),
+(9, 3, 'Ekonomis'),
 (10, 4, 'Premium'),
 (11, 4, 'Medium'),
-(12, 4, 'Rendah'),
+(12, 4, 'Ekonomis'),
 (13, 5, 'Premium'),
 (14, 5, 'Medium'),
-(15, 5, 'Rendah');
+(15, 5, 'Ekonomis');
 
 -- --------------------------------------------------------
 
@@ -137,7 +137,7 @@ CREATE TABLE `users` (
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role` enum('admin','petani','pedagang') DEFAULT 'petani'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
