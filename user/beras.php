@@ -65,7 +65,7 @@ foreach ($grades as $grade) {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     .chart-box { max-width: 100%; height: 300px; }
-    body { background-color: #f1f5f9; }
+    body { background-color:rgb(212, 228, 231); }
   </style>
 </head>
 <body>
@@ -205,7 +205,7 @@ foreach ($grades as $grade) {
             data: <?= $data ?>,
             fill: true,
             borderColor: '#2e7d32',
-            backgroundColor: 'rgba(46, 125, 50, 0.1)',
+            backgroundColor: 'rgba(17, 113, 126, 0.27)',
             tension: 0.3
           }]
         },
