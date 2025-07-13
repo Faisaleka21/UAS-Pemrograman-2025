@@ -112,8 +112,6 @@ requireLogin('admin');
         <div class="card p-6">
             <h2 class="text-xl font-semibold mb-4">Statistik Pengguna</h2>
             <p class="text-gray-600 mb-2">Jumlah pengguna terdaftar: <strong>150</strong></p>
-            <p class="text-gray-600 mb-2">Jumlah pengguna aktif: <strong>120</strong></p>
-            <p class="text-gray-600 mb-2">Jumlah pengguna tidak aktif: <strong>30</strong></p>
         </div>
 
         <div class="card p-6">
@@ -126,16 +124,16 @@ requireLogin('admin');
                         <th class="px-4 py-2">Username</th>
                         <th class="px-4 py-2">Role</th>
                         <th class="px-4 py-2">Status</th>
-                        <th class="px-4 py-2">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                      <?php 
+                     $no = 1;
                         require_once __DIR__. "/../koneksi/conn.php";
-                        $sql_query = "SELECT * FROM users ORDER BY id DESC LIMIT 3";
+                        $sql_query = "SELECT * FROM users ORDER BY id_users DESC LIMIT 3";
                         if ($result = $conn ->query($sql_query)) {
                             while ($row = $result -> fetch_assoc()) { 
-                                $id = $row['id'];  //yg dlm kurung siku disamakan harus sesuai nama kolom di database
+                              //yg dlm kurung siku disamakan harus sesuai nama kolom di database
                                 $name = $row['nama'];
                                 $username = $row['username'];
                                 $password = $row['password'];
@@ -143,19 +141,11 @@ requireLogin('admin');
                     ?>
                     
                     <tr class="trow">
-                        <td class="px-4 py-2 text-center"><?php echo $id; ?></td>
-                        <td class="px-4 py-2"><?php echo $name; ?></td>
-                        <td class="px-4 py-2"><?php echo $username; ?></td>
-                        <td class="px-4 py-2"><?php echo $password; ?></td>
-                        <td class="px-4 py-2 text-center"><?php echo $role; ?></td>
-                        <td class="px-4 py-2 text-center">
-                            <a href="update.php?id=<?php echo $id; ?>" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-1 px-3 rounded mr-2 transition duration-200" title="Edit">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a href="delete.php?id=<?php echo $id; ?>" class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition duration-200" title="Delete" onclick="return confirm('Yakin ingin menghapus pengguna ini?');">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </a>
-                        </td>
+                                <td class="px-4 py-2 text-center"><?php echo $no++; ?></td>
+                                <td class="px-4 py-2"><?php echo $name; ?></td>
+                                <td class="px-4 py-2"><?php echo $username; ?></td>
+                                <td class="px-4 py-2"><?php echo $password; ?></td>
+                                <td class="px-4 py-2 text-center"><?php echo $role; ?></td>
                     </tr>
 
                     <?php
@@ -204,6 +194,10 @@ requireLogin('admin');
             }
         });
     </script>
+
+
+
+
 </body>
 </html>
 
