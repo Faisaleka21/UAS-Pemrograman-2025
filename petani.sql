@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jul 09, 2025 at 06:15 PM
--- Server version: 8.4.3
--- PHP Version: 8.3.16
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 13 Jul 2025 pada 05.30
+-- Versi server: 10.4.32-MariaDB
+-- Versi PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,16 +24,16 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `commodities`
+-- Struktur dari tabel `commodities`
 --
 
 CREATE TABLE `commodities` (
-  `id` int NOT NULL,
-  `nama` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `id` int(11) NOT NULL,
+  `nama` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `commodities`
+-- Dumping data untuk tabel `commodities`
 --
 
 INSERT INTO `commodities` (`id`, `nama`) VALUES
@@ -46,18 +46,18 @@ INSERT INTO `commodities` (`id`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `commodity_prices`
+-- Struktur dari tabel `commodity_prices`
 --
 
 CREATE TABLE `commodity_prices` (
-  `id` int NOT NULL,
-  `grade_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `grade_id` int(11) DEFAULT NULL,
   `tanggal` date DEFAULT NULL,
-  `harga` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `harga` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `commodity_prices`
+-- Dumping data untuk tabel `commodity_prices`
 --
 
 INSERT INTO `commodity_prices` (`id`, `grade_id`, `tanggal`, `harga`) VALUES
@@ -95,17 +95,17 @@ INSERT INTO `commodity_prices` (`id`, `grade_id`, `tanggal`, `harga`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grades`
+-- Struktur dari tabel `grades`
 --
 
 CREATE TABLE `grades` (
-  `id` int NOT NULL,
-  `commodity_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `commodity_id` int(11) DEFAULT NULL,
   `nama_grade` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `grades`
+-- Dumping data untuk tabel `grades`
 --
 
 INSERT INTO `grades` (`id`, `commodity_id`, `nama_grade`) VALUES
@@ -128,101 +128,82 @@ INSERT INTO `grades` (`id`, `commodity_id`, `nama_grade`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktur dari tabel `users`
 --
 
 CREATE TABLE `users` (
-  `id` int NOT NULL,
-  `nama` varchar(100) DEFAULT NULL,
-  `username` varchar(50) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `role` enum('admin','petani','pedagang') DEFAULT 'petani'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id_users` int(11) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `role` enum('admin','petani') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `nama`, `username`, `password`, `role`) VALUES
-(1, 'admin', 'admin', '123', 'admin'),
-(2, 'Pak Budi', 'budi', 'budi123', 'petani'),
-(3, 'jono', 'sari', 'jono123', 'petani');
+INSERT INTO `users` (`id_users`, `nama`, `username`, `password`, `role`) VALUES
+(1, 'faisal', 'faisal', 'faisal', 'petani'),
+(2, 'admin', 'admin', 'admin123', 'admin'),
+(3, 'a', 'a', 'a', 'petani'),
+(4, 'Faisal Eka Nur Irawan ', '23', '23', 'petani');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `commodities`
+-- Indeks untuk tabel `commodities`
 --
 ALTER TABLE `commodities`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nama` (`nama`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `commodity_prices`
+-- Indeks untuk tabel `commodity_prices`
 --
 ALTER TABLE `commodity_prices`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `grade_id` (`grade_id`,`tanggal`);
+  ADD KEY `commodity_prices_ibfk_1` (`grade_id`);
 
 --
--- Indexes for table `grades`
+-- Indeks untuk tabel `grades`
 --
 ALTER TABLE `grades`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `commodity_id` (`commodity_id`);
+  ADD KEY `grades_ibfk_1` (`commodity_id`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id_users`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `commodities`
---
-ALTER TABLE `commodities`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `commodity_prices`
---
-ALTER TABLE `commodity_prices`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
--- AUTO_INCREMENT for table `grades`
---
-ALTER TABLE `grades`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `commodity_prices`
+-- Ketidakleluasaan untuk tabel `commodity_prices`
 --
 ALTER TABLE `commodity_prices`
-  ADD CONSTRAINT `commodity_prices_ibfk_1` FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `commodity_prices_ibfk_1` FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `grades`
+-- Ketidakleluasaan untuk tabel `grades`
 --
 ALTER TABLE `grades`
-  ADD CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`commodity_id`) REFERENCES `commodities` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`commodity_id`) REFERENCES `commodities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

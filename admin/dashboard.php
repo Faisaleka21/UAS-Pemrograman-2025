@@ -66,9 +66,9 @@ requireLogin('admin');
                     </a>
                 </li>
                 <li class="mb-4">
-                    <a href="#" class="flex items-center p-2 rounded hover:bg-purple-600">
+                    <a href="harga.php" class="flex items-center p-2 rounded hover:bg-purple-600">
                         <i class="fas fa-chart-line icon"></i>
-                        Laporan Harga Pangan
+                        Harga Komoditas
                     </a>
                 </li>
                 <li class="mb-4">
