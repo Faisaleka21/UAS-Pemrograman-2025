@@ -81,12 +81,6 @@ requireLogin('admin');
                         Harga Komoditas
                     </a>
                 </li>
-                <li class="mb-4">
-                    <a href="#" class="flex items-center p-2 rounded hover:bg-purple-600">
-                        <i class="fas fa-cog icon"></i>
-                        Pengaturan
-                    </a>
-                </li>
                 <li>
                     <a href="../logout.php" class="flex items-center p-2 rounded hover:bg-purple-600">
                         <i class="fas fa-sign-out-alt icon"></i>
