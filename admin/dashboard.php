@@ -132,7 +132,7 @@ requireLogin('admin');
                 <tbody>
                      <?php 
                         require_once __DIR__. "/../koneksi/conn.php";
-                        $sql_query = "SELECT * FROM users ORDER BY id DESC LIMIT 3"; // query untuk mengambil data dari tabel dokter
+                        $sql_query = "SELECT * FROM users ORDER BY id DESC LIMIT 3";
                         if ($result = $conn ->query($sql_query)) {
                             while ($row = $result -> fetch_assoc()) { 
                                 $id = $row['id'];  //yg dlm kurung siku disamakan harus sesuai nama kolom di database
