@@ -62,18 +62,20 @@ while ($row = mysqli_fetch_assoc($result)) {
       <nav class="relative">
         <ul class="flex space-x-6 font-medium items-center">
           <li><a href="home.php" class="hover:text-accent transition"><i class="fas fa-home mr-1"></i>Beranda</a></li>
+          
           <li class="dropdown">
-            <a href="#" class="hover:text-accent transition flex items-center">
-              <i class="fas fa-tags mr-1"></i>Harga Komoditas<i class="fas fa-caret-down ml-1"></i>
+            <a class="dropdown-toggle hover:text-accent transition flex items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-seedling mr-1"></i> Komoditas
             </a>
-            <ul class="dropdown-menu absolute left-0 mt-2 w-48 bg-white text-gray-800 shadow-lg rounded hidden z-10">
-              <li><a href="beras.php" class="block px-4 py-2 hover:bg-gray-100">Beras</a></li>
-              <li><a href="ketan.php" class="block px-4 py-2 hover:bg-gray-100">Ketan</a></li>
-              <li><a href="cabai.php" class="block px-4 py-2 hover:bg-gray-100">Cabai</a></li>
-              <li><a href="tomat.php" class="block px-4 py-2 hover:bg-gray-100">Tomat</a></li>
-              <li><a href="jagung.php" class="block px-4 py-2 hover:bg-gray-100">Jagung</a></li>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item active" href="beras.php">Beras</a></li>
+              <li><a class="dropdown-item" href="cabai.php">Cabai</a></li>
+              <li><a class="dropdown-item" href="jagung.php">Jagung</a></li>
+              <li><a class="dropdown-item" href="ketan.php">Ketan</a></li>
+              <li><a class="dropdown-item" href="tomat.php">Tomat</a></li>
             </ul>
           </li>
+
           <li><a href="tentang.php" class="hover:text-accent transition"><i class="fas fa-info-circle mr-1"></i>Tentang</a></li>
         </ul>
       </nav>

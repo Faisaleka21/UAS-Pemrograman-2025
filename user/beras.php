@@ -65,6 +65,7 @@ foreach ($grades as $grade) {
       <div class="container mx-auto px-4 py-2 flex justify-between items-center">
         <ul class="flex space-x-6 font-medium">
           <li><a href="home.php" class="hover:text-accent transition flex items-center"><i class="fas fa-home mr-1"></i> Beranda</a></li>
+          
           <li class="dropdown">
             <a class="dropdown-toggle hover:text-accent transition flex items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-seedling mr-1"></i> Komoditas
@@ -77,6 +78,7 @@ foreach ($grades as $grade) {
               <li><a class="dropdown-item" href="tomat.php">Tomat</a></li>
             </ul>
           </li>
+          
         </ul>
         <a href="../logout.php" class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded transition flex items-center">
           <i class="fas fa-sign-out-alt mr-2"></i> Logout
