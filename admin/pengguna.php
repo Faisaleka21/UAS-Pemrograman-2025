@@ -149,7 +149,7 @@ requireLogin('admin');
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
                                     <!-- Tombol Delete -->
-                                    <a href="delete.php?id=<?php echo $id; ?>" class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition duration-200" title="Delete" onclick="return confirm('Yakin ingin menghapus pengguna ini?');">
+                                    <a href="../koneksi/delete.php?id=<?php echo $id; ?>" class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition duration-200" title="Delete" onclick="return confirm('Yakin ingin menghapus pengguna ini?');">
                                         <i class="fas fa-trash-alt"></i> Delete
                                     </a>
 
