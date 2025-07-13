@@ -95,7 +95,7 @@ while ($row = mysqli_fetch_assoc($result)) {
   </section>
 
   <!-- Insight Harga -->
-  <section class="py-16 bg-gray-100">
+  <section class="py-16 bg-gray-50">
     <div class="max-w-screen-xl mx-auto px-4">
       <h3 class="text-2xl font-bold text-center mb-10">Harga Komoditas Terbaru</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -158,7 +158,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         <i class="fas fa-leaf text-2xl"></i>
         <span class="text-xl font-bold">HargaPangan Desa</span>
       </div>
-      <p class="text-sm opacity-80">© 2023 HargaPangan Desa. Seluruh hak cipta dilindungi.</p>
+      <p class="text-sm opacity-80">© 2025 HargaPangan Desa. hak cipta dilindungi.</p>
     </div>
   </footer>
 

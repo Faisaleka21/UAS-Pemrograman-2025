@@ -110,6 +110,17 @@
     <?php endforeach; ?>
   </div>
 
+   <!-- Footer -->
+  <footer class="bg-primary text-white py-8">
+    <div class="max-w-screen-xl mx-auto px-4 text-center">
+      <div class="flex justify-center mb-4 items-center space-x-2">
+        <i class="fas fa-leaf text-2xl"></i>
+        <span class="text-xl font-bold">HargaPangan Desa</span>
+      </div>
+      <p class="text-sm opacity-80">© 2025 HargaPangan Desa. hak cipta dilindungi.</p>
+    </div>
+  </footer>
+
   <!-- Script -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
