@@ -15,22 +15,55 @@ while ($row = mysqli_fetch_assoc($grade_query)) {
   $grades[] = $row;
 }
 
-// Ambil data harga 7 hari terakhir & histori semua data per grade
+// Ambil data harga & insight per grade
 $data_chart = [];
 $data_table = [];
+$insight = [];
+
 foreach ($grades as $grade) {
   $grade_id = $grade['id'];
 
-  // Harga 7 hari terakhir (untuk chart)
+  // Harga 7 hari terakhir
   $chart_query = mysqli_query($conn, "
     SELECT tanggal, harga FROM commodity_prices
     WHERE grade_id = $grade_id
     ORDER BY tanggal DESC
     LIMIT 7
   ");
-  $data_chart[$grade_id] = array_reverse(mysqli_fetch_all($chart_query, MYSQLI_ASSOC));
+  $chart_data = array_reverse(mysqli_fetch_all($chart_query, MYSQLI_ASSOC));
+  $data_chart[$grade_id] = $chart_data;
 
-  // Seluruh histori harga (untuk tabel)
+  // Insight pergerakan
+  $harga_terakhir = $chart_data[count($chart_data) - 1]['harga'] ?? 0;
+  $harga_awal = $chart_data[0]['harga'] ?? 0;
+
+  $selisih = $harga_terakhir - $harga_awal;
+  $persentase = $harga_awal > 0 ? ($selisih / $harga_awal) * 100 : 0;
+
+  if ($selisih > 0) {
+    $tren = 'naik';
+    $warna_tren = 'text-green-600';
+    $ikon = '+';
+  } elseif ($selisih < 0) {
+    $tren = 'turun';
+    $warna_tren = 'text-red-600';
+    $ikon = '-';
+  } else {
+    $tren = 'stabil';
+    $warna_tren = 'text-yellow-600';
+    $ikon = '';
+  }
+
+  $insight[$grade_id] = [
+    'awal' => $harga_awal,
+    'akhir' => $harga_terakhir,
+    'persen' => round(abs($persentase), 1),
+    'tren' => $tren,
+    'warna' => $warna_tren,
+    'ikon' => $ikon
+  ];
+
+  // Histori semua harga
   $table_query = mysqli_query($conn, "
     SELECT tanggal, harga FROM commodity_prices
     WHERE grade_id = $grade_id
@@ -46,12 +79,14 @@ foreach ($grades as $grade) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HargaPangan Desa - Dashboard Beras</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100">
+
+  <!-- Header -->
   <header class="bg-primary text-white shadow-md">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-2">
@@ -61,11 +96,11 @@ foreach ($grades as $grade) {
       <div class="text-sm opacity-80">Diperbarui: <?= date('H:i') ?> WIB</div>
     </div>
 
-    <nav class="bg-secondary bg-opacity-90">
+    <!-- Navigasi -->
+    <nav class="bg-secondary bg-opacity-50">
       <div class="container mx-auto px-4 py-2 flex justify-between items-center">
         <ul class="flex space-x-6 font-medium">
           <li><a href="home.php" class="hover:text-accent transition flex items-center"><i class="fas fa-home mr-1"></i> Beranda</a></li>
-          
           <li class="dropdown">
             <a class="dropdown-toggle hover:text-accent transition flex items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-seedling mr-1"></i> Komoditas
@@ -78,7 +113,6 @@ foreach ($grades as $grade) {
               <li><a class="dropdown-item" href="tomat.php">Tomat</a></li>
             </ul>
           </li>
-          
         </ul>
         <a href="../logout.php" class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded transition flex items-center">
           <i class="fas fa-sign-out-alt mr-2"></i> Logout
@@ -87,26 +121,31 @@ foreach ($grades as $grade) {
     </nav>
   </header>
 
+  <!-- Konten -->
   <div class="container py-10">
-    <h1 class="text-3xl font-bold mb-10 text-center">Dashboard Harga - Beras</h1>
+    <h1 class="text-3xl font-bold mb-10 text-center">Harga Beras</h1>
 
     <?php foreach ($grades as $grade): ?>
+      <?php $i = $insight[$grade['id']]; ?>
       <section class="py-10 px-6 mb-12 rounded-lg shadow bg-white">
         <div class="grid md:grid-cols-2 gap-8 items-start">
-          <!-- Kiri: Chart -->
+          <!-- Chart -->
           <div>
             <h3 class="text-xl font-semibold mb-3">Grade: <?= htmlspecialchars($grade['nama_grade']) ?></h3>
             <canvas id="chart_<?= $grade['id'] ?>" class="w-full h-64"></canvas>
           </div>
-          <!-- Kanan: Highlight -->
+
+          <!-- Highlight -->
           <div class="bg-gray-100 p-6 rounded-lg text-center">
             <p class="text-sm text-gray-600">Pergerakan 7 hari terakhir</p>
-            <p class="text-3xl font-bold text-green-600 mt-2">+3.2%</p>
-            <p class="mt-2 text-sm text-gray-500">Harga naik stabil dari Rp12.000 ke Rp12.500</p>
+            <p class="text-3xl font-bold <?= $i['warna'] ?> mt-2"><?= $i['ikon'] . $i['persen'] ?>%</p>
+            <p class="mt-2 text-sm text-gray-500">
+              Harga <?= $i['tren'] ?> dari Rp<?= number_format($i['awal'], 0, ',', '.') ?> ke Rp<?= number_format($i['akhir'], 0, ',', '.') ?>
+            </p>
           </div>
         </div>
 
-        <!-- Table -->
+        <!-- Tabel -->
         <div class="mt-6">
           <div class="table-responsive">
             <table class="table table-bordered table-striped dataTable" id="table_<?= $grade['id'] ?>">
@@ -133,6 +172,7 @@ foreach ($grades as $grade) {
     <?php endforeach; ?>
   </div>
 
+  <!-- Script -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -167,8 +207,8 @@ foreach ($grades as $grade) {
           label: 'Harga (Rp)',
           data: <?= $data ?>,
           fill: true,
-          borderColor: '#2e7d32',
-          backgroundColor: 'rgba(46, 125, 50, 0.1)',
+          borderColor: 'rgba(55, 206, 211, 0.91)',
+          backgroundColor: 'rgba(13, 127, 131, 0.1)',
           tension: 0.3
         }]
       },
