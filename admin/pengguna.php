@@ -59,7 +59,7 @@ requireLogin('admin');
 
 <body class="min-h-screen flex">
     <!-- Sidebar -->
-    <div class="sidebar w-64 h-screen p-5">
+   <div class="sidebar fixed top-0 left-0 w-64 h-screen p-5 overflow-y-auto">
         <h2 class="text-2xl font-bold text-white mb-6">Dashboard Admin</h2>
         <nav>
             <ul>
@@ -92,15 +92,28 @@ requireLogin('admin');
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-10">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Selamat Datang, Admin!</h1>
-
+    <div class="flex-1 p-10 ml-64">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">Selamat Datang</h1>
         <!-- pengguna -->
-        <div class="card p-6">
+        <div class="card p-6 mb-6">
             <h2 class="text-xl font-semibold mb-4">Statistik Pengguna</h2>
-            <p class="text-gray-600 mb-2">Jumlah pengguna terdaftar: <strong>150</strong></p>
-            <p class="text-gray-600 mb-2">Jumlah pengguna aktif: <strong>120</strong></p>
-            <p class="text-gray-600 mb-2">Jumlah pengguna tidak aktif: <strong>30</strong></p>
+            <?php
+            // Query jumlah pengguna terdaftar
+            $result_total = $conn->query("SELECT COUNT(*) as total FROM users");
+            $total_users = $result_total ? $result_total->fetch_assoc()['total'] : 0;
+
+            // Query jumlah admin
+            $result_admin = $conn->query("SELECT COUNT(*) as total FROM users WHERE role = 'admin'");
+            $total_admin = $result_admin ? $result_admin->fetch_assoc()['total'] : 0;
+
+            // Query jumlah petani (user)
+            $result_petani = $conn->query("SELECT COUNT(*) as total FROM users WHERE role = 'petani'");
+            $total_petani = $result_petani ? $result_petani->fetch_assoc()['total'] : 0;
+            ?>
+
+            <p class="text-gray-600 mb-2">Jumlah pengguna terdaftar: <strong><?php echo $total_users; ?></strong></p>
+            <p class="text-gray-600 mb-2">Jumlah admin: <strong><?php echo $total_admin; ?></strong></p>
+            <p class="text-gray-600 mb-2">Jumlah petani: <strong><?php echo $total_petani; ?></strong></p>
         </div>
 
 

@@ -59,7 +59,7 @@ requireLogin('admin');
 
 <body class="min-h-screen flex">
     <!-- Sidebar -->
-    <div class="sidebar w-64 h-screen p-5">
+    <div class="sidebar fixed top-0 left-0 w-64 h-screen p-5 overflow-y-auto">
         <h2 class="text-2xl font-bold text-white mb-6">Dashboard Admin</h2>
         <nav>
             <ul>
@@ -92,8 +92,8 @@ requireLogin('admin');
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-10">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Selamat Datang, Admin!</h1>
+    <div class="flex-1 p-10 ml-64">
+    <h1 class="text-3xl font-bold text-gray-800">Selamat Datang</h1>
 
         <!-- Form Input Komoditas -->
         <div class="card p-6 mt-8">
