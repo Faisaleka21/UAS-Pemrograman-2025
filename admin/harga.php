@@ -23,7 +23,7 @@ requireLogin('admin');
         }
 
         .sidebar {
-            background: linear-gradient(to bottom right, #4f46e5, #7c3aed);
+            background: linear-gradient(to bottom right, #5046E5, #7c3aed);
         }
 
         .sidebar a {
@@ -93,7 +93,10 @@ requireLogin('admin');
 
     <!-- Main Content -->
     <div class="flex-1 p-10 ml-64">
-    <h1 class="text-3xl font-bold text-gray-800">Selamat Datang</h1>
+        <div class="flex items-center space-x-2 mb-2 md:mb-4 ">
+        <i class="fas fa-leaf text-3xl"></i>
+        <h1 class="text-3xl font-bold text-gray-800">Sistem Informasi Harga Pangan Desa</h1>
+      </div>
 
         <!-- Form Input Komoditas -->
         <div class="card p-6 mt-8">
@@ -156,9 +159,6 @@ requireLogin('admin');
             <canvas id="hargaChart" height="100"></canvas>
         </div>
 
-
-
-
         <!-- Daftar Harga Komoditas -->
         <div class="card p-6 mt-8">
             <h2 class="text-xl font-semibold mb-4">Daftar Harga Komoditas</h2>
@@ -188,6 +188,7 @@ requireLogin('admin');
                         <th class="px-4 py-2">Grade</th>
                         <th class="px-4 py-2">Harga (Rp)</th>
                         <th class="px-4 py-2">Tanggal</th>
+                        <th class="px-4 py-2">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -221,13 +222,17 @@ requireLogin('admin');
 
                     // Query data dengan LIMIT
                     $sql_komoditas = "SELECT 
-                                            c.nama AS komoditas, 
-                                            g.nama_grade AS grade, 
-                                            cp.harga, 
-                                            cp.tanggal
-                                        FROM commodity_prices cp
-                                        JOIN grades g ON cp.grade_id = g.id
-                                        JOIN commodities c ON g.commodity_id = c.id";
+    cp.id,
+    cp.grade_id,
+    cp.harga, 
+    cp.tanggal,
+    c.nama AS komoditas, 
+    g.nama_grade AS grade
+FROM commodity_prices cp
+JOIN grades g ON cp.grade_id = g.id
+JOIN commodities c ON g.commodity_id = c.id";
+
+
                     if ($filter) {
                         $sql_komoditas .= " WHERE c.id = ?";
                     }
@@ -244,56 +249,144 @@ requireLogin('admin');
                         $stmt->execute();
                         $result_komoditas = $stmt->get_result();
                     }
+                    ?>
 
+                    <?php
                     $no = $offset + 1;
                     $chartData = [];
 
                     if ($result_komoditas && $result_komoditas->num_rows > 0) {
                         while ($row = $result_komoditas->fetch_assoc()) {
-                            echo '<tr>';
-                            echo '<td class="px-4 py-2 text-center">' . $no++ . '</td>';
-                            echo '<td class="px-4 py-2">' . htmlspecialchars($row['komoditas']) . '</td>';
-                            echo '<td class="px-4 py-2">' . htmlspecialchars($row['grade']) . '</td>';
-                            echo '<td class="px-4 py-2">Rp ' . number_format($row['harga'], 0, ',', '.') . '</td>';
-                            echo '<td class="px-4 py-2">' . htmlspecialchars($row['tanggal']) . '</td>';
-                            echo '</tr>';
+                    ?>
+                            <tr>
+                                <td class="px-4 py-2 text-center"><?= $no++ ?></td>
+                                <td class="px-4 py-2"><?= htmlspecialchars($row['komoditas']) ?></td>
+                                <td class="px-4 py-2"><?= htmlspecialchars($row['grade']) ?></td>
+                                <td class="px-4 py-2">Rp <?= number_format($row['harga'], 0, ',', '.') ?></td>
+                                <td class="px-4 py-2"><?= htmlspecialchars($row['tanggal']) ?></td>
+                                <td class="px-4 py-2 text-center">
+                                   <!-- Tombol Aksi -->
+<div class="flex items-center justify-center space-x-2">
+    <!-- Tombol Edit -->
+    <button onclick="openModal<?= $row['id'] ?>()" class="flex items-center bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6.586-6.586a2 2 0 112.828 2.828L11.828 14H9v-3z" />
+        </svg>
+        Edit
+    </button>
 
-                            // Chart prep
+    <!-- Tombol Delete -->
+    <a href="../koneksi/delete_harga.php?id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus data ini?')" class="flex items-center bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Hapus
+    </a>
+</div>
+
+                                </td>
+                            </tr>
+
+                            <!-- Modal Edit -->
+                            <div id="modalEdit<?= $row['id'] ?>" class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden items-center justify-center">
+                                <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative">
+                                    <h3 class="text-xl font-semibold mb-4">Edit Harga Komoditas</h3>
+                                    <form method="POST" action="../koneksi/update_price.php" class="space-y-4">
+                                        <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+
+                                        <!-- Grade -->
+                                        <div>
+                                            <label class="block font-medium mb-1">Grade</label>
+                                            <select name="grade_id" class="w-full border rounded px-3 py-2" required>
+                                                <option value="">-- Pilih Grade --</option>
+                                                <?php
+                                                $grade_query = $conn->query("SELECT g.id, g.nama_grade, c.nama AS nama_komoditas 
+                                                         FROM grades g 
+                                                         JOIN commodities c ON g.commodity_id = c.id 
+                                                         ORDER BY c.nama, g.nama_grade");
+                                                while ($g = $grade_query->fetch_assoc()):
+                                                    $selected = ($g['id'] == $row['grade_id']) ? 'selected' : '';
+                                                    $label = $g['nama_komoditas'] . ' - ' . $g['nama_grade'];
+                                                ?>
+                                                    <option value="<?= $g['id'] ?>" <?= $selected ?>><?= htmlspecialchars($label) ?></option>
+                                                <?php endwhile; ?>
+                                            </select>
+                                        </div>
+
+                                        <!-- Harga -->
+                                        <div>
+                                            <label class="block font-medium mb-1">Harga (Rp)</label>
+                                            <input type="number" name="harga" value="<?= htmlspecialchars($row['harga']) ?>" class="w-full border rounded px-3 py-2" required>
+                                        </div>
+
+                                        <!-- Tanggal -->
+                                        <div>
+                                            <label class="block font-medium mb-1">Tanggal</label>
+                                            <input type="date" name="tanggal" value="<?= htmlspecialchars($row['tanggal']) ?>" class="w-full border rounded px-3 py-2" required>
+                                        </div>
+
+                                        <div class="flex justify-end gap-2 pt-4 border-t">
+                                            <button type="button" onclick="closeModal<?= $row['id'] ?>()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                                            <button type="submit" name="update" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Script Modal -->
+                            <script>
+                                function openModal<?= $row['id'] ?>() {
+                                    document.getElementById("modalEdit<?= $row['id'] ?>").classList.remove("hidden");
+                                    document.getElementById("modalEdit<?= $row['id'] ?>").classList.add("flex");
+                                }
+
+                                function closeModal<?= $row['id'] ?>() {
+                                    document.getElementById("modalEdit<?= $row['id'] ?>").classList.add("hidden");
+                                    document.getElementById("modalEdit<?= $row['id'] ?>").classList.remove("flex");
+                                }
+                            </script>
+                    <?php
+
+                            // Simpan untuk grafik
                             $chartData[$row['komoditas']][$row['grade']][$row['tanggal']] = $row['harga'];
                         }
                     } else {
-                        echo '<tr><td colspan="5" class="px-4 py-2 text-center text-gray-500">Tidak ada data untuk komoditas tersebut.</td></tr>';
+                        echo '<tr><td colspan="6" class="px-4 py-2 text-center text-gray-500">Tidak ada data untuk komoditas tersebut.</td></tr>';
                     }
                     ?>
+
+
+                    
+                    
                 </tbody>
-                </table>
-                <!-- PAGINATION LINKS -->
-                <div class="mt-4 flex justify-center space-x-2">
-                    <?php
-                    // Build base URL for pagination (preserve filter)
-                    $baseUrl = $_SERVER['PHP_SELF'] . '?';
-                    if ($filter) {
-                        $baseUrl .= 'filter_komoditas=' . urlencode($filter) . '&';
+            </table>
+            <!-- PAGINATION LINKS -->
+            <div class="mt-4 flex justify-center space-x-2">
+                <?php
+                // Build base URL for pagination (preserve filter)
+                $baseUrl = $_SERVER['PHP_SELF'] . '?';
+                if ($filter) {
+                    $baseUrl .= 'filter_komoditas=' . urlencode($filter) . '&';
+                }
+                // Previous button
+                if ($page > 1) {
+                    echo '<a href="' . $baseUrl . 'page=' . ($page - 1) . '" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">Sebelumnya</a>';
+                }
+                // Numbered links
+                for ($i = 1; $i <= $totalPages; $i++) {
+                    if ($i == $page) {
+                        echo '<span class="px-3 py-1 rounded bg-indigo-600 text-white font-bold">' . $i . '</span>';
+                    } else {
+                        echo '<a href="' . $baseUrl . 'page=' . $i . '" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">' . $i . '</a>';
                     }
-                    // Previous button
-                    if ($page > 1) {
-                        echo '<a href="' . $baseUrl . 'page=' . ($page - 1) . '" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">Sebelumnya</a>';
-                    }
-                    // Numbered links
-                    for ($i = 1; $i <= $totalPages; $i++) {
-                        if ($i == $page) {
-                            echo '<span class="px-3 py-1 rounded bg-indigo-600 text-white font-bold">' . $i . '</span>';
-                        } else {
-                            echo '<a href="' . $baseUrl . 'page=' . $i . '" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">' . $i . '</a>';
-                        }
-                    }
-                    // Next button
-                    if ($page < $totalPages) {
-                        echo '<a href="' . $baseUrl . 'page=' . ($page + 1) . '" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">Berikutnya</a>';
-                    }
-                    ?>
-                </div>
-            
+                }
+                // Next button
+                if ($page < $totalPages) {
+                    echo '<a href="' . $baseUrl . 'page=' . ($page + 1) . '" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">Berikutnya</a>';
+                }
+                ?>
+            </div>
+
         </div>
 
 

@@ -9,6 +9,27 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e293b',
+            secondary: '#475569',
+            accent: '#22c55e',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .bg-primary {
+      background-color: #5046E5 !important;
+    }
+    .bg-secondary {
+      background-color: #7A3AED !important;
+    }
+  </style>
 </head>
 <body class="bg-gray-100">
   <!-- Header -->
@@ -39,7 +60,7 @@
             </ul>
           </li>
         </ul>
-        <a href="../logout.php" class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded transition flex items-center">
+        <a href="../logout.php" class="mt-2 md:mt-0 bg-accent hover:bg-green-600 text-white px-4 py-2 rounded transition">
           <i class="fas fa-sign-out-alt mr-2"></i> Logout
         </a>
       </div>

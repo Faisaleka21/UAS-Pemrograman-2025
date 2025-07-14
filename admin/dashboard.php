@@ -23,7 +23,7 @@ requireLogin('admin');
         }
 
         .sidebar {
-            background: linear-gradient(to bottom right, #4f46e5, #7c3aed);
+            background: linear-gradient(to bottom right, #5046E5, #7A3AED);
         }
 
         .sidebar a {
@@ -93,8 +93,10 @@ requireLogin('admin');
 
     <!-- Main Content -->
     <div class="flex-1 p-10 ml-64">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Selamat Datang</h1>
-        
+        <div class="flex items-center space-x-2 mb-2 md:mb-4 ">
+        <i class="fas fa-leaf text-3xl"></i>
+        <h1 class="text-3xl font-bold text-gray-800">Sistem Informasi Harga Pangan Desa</h1>
+      </div>
         <div class="flex items-center gap-6 mb-8">
                     <?php
                     // Jumlah Komoditas
