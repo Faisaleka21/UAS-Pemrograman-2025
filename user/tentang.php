@@ -2,25 +2,6 @@
 require_once '../koneksi/conn.php';
 require_once '../auth.php';
 requireLogin('petani');
-
-$query = "
-    SELECT c.nama AS komoditas, g.nama_grade, cp.harga, cp.tanggal 
-    FROM commodity_prices cp
-    INNER JOIN grades g ON cp.grade_id = g.id
-    INNER JOIN commodities c ON g.commodity_id = c.id
-    WHERE cp.tanggal = (
-        SELECT MAX(tanggal)
-        FROM commodity_prices cp2
-        WHERE cp2.grade_id = cp.grade_id
-    )
-    ORDER BY c.nama, g.nama_grade;
-";
-
-$result = mysqli_query($conn, $query);
-$data_terbaru = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $data_terbaru[] = $row;
-}
 ?>
 <!DOCTYPE html>
 <html lang="id">
