@@ -112,35 +112,42 @@ while ($row = mysqli_fetch_assoc($result)) {
       </div>
 
       <!-- Carousel Slides -->
-      <div class="carousel-inner rounded-lg shadow-lg overflow-hidden" style="height: 400px;">
-        
-        <!-- Slide 1 -->
-        <div class="carousel-item active position-relative w-100 h-100 bg-cover bg-center d-flex justify-content-center align-items-center" style="background-image: url('../image/gambar2.jpg');">
-          <div class="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-50"></div>
-          <div class="text-center text-white position-relative px-4">
-            <h2 class="text-4xl fw-bold mb-3">Sistem Informasi Harga Pangan Desa</h2>
-            <p class="text-lg opacity-90 max-w-2xl mx-auto">Dapatkan informasi harga pangan terkini untuk komoditas pertanian Anda secara real-time.</p>
-          </div>
-        </div>
-
-        <!-- Slide 2 -->
-        <div class="carousel-item position-relative w-100 h-100 bg-cover bg-center d-flex justify-content-center align-items-center" style="background-image: url('../image/gambar1.jpg');">
-          <div class="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-50"></div>
-          <div class="text-center text-white position-relative px-4">
-            <h2 class="text-4xl fw-bold mb-3">Pantau Harga Komoditas Setiap Hari</h2>
-            <p class="text-lg opacity-90 max-w-2xl mx-auto">Harga selalu diperbarui dari berbagai pasar lokal desa untuk keputusan terbaik Anda.</p>
-          </div>
-        </div>
-
-        <!-- Slide 3 -->
-        <div class="carousel-item position-relative w-100 h-100 bg-cover bg-center d-flex justify-content-center align-items-center" style="background-image: url('../image/gambar4.jpg');">
-          <div class="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-50"></div>
-          <div class="text-center text-white position-relative px-4">
-            <h2 class="text-4xl fw-bold mb-3">Mudah Diakses di Berbagai Perangkat</h2>
-            <p class="text-lg opacity-90 max-w-2xl mx-auto">Akses informasi harga pangan kapan saja dan di mana saja, baik dari desktop maupun mobile.</p>
-          </div>
-        </div>
+        <!-- slide inner -->
+     <div class="carousel-inner rounded-lg shadow-lg overflow-hidden" style="height: 400px;">
+  <!-- Slide 1 -->
+  <div class="carousel-item active position-relative" style="height: 400px;">
+    <img src="../image/gambar2.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="Slide 1">
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+      <div class="bg-black bg-opacity-50 text-white text-center rounded p-4">
+        <h2 class="fs-2 fw-bold mb-3">Sistem Informasi Harga Pangan Desa</h2>
+        <p class="fs-5">Dapatkan informasi harga pangan terkini untuk komoditas pertanian Anda secara real-time.</p>
       </div>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="carousel-item position-relative" style="height: 400px;">
+    <img src="../image/gambar1.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="Slide 2">
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+      <div class="bg-black bg-opacity-50 text-white text-center rounded p-4">
+        <h2 class="fs-2 fw-bold mb-3">Pantau Harga Komoditas Setiap Hari</h2>
+        <p class="fs-5">Harga selalu diperbarui dari berbagai pasar lokal desa untuk keputusan terbaik Anda.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="carousel-item position-relative" style="height: 400px;">
+    <img src="../image/gambar4.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="Slide 3">
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+      <div class="bg-black bg-opacity-50 text-white text-center rounded p-4">
+        <h2 class="fs-2 fw-bold mb-3">Mudah Diakses di Berbagai Perangkat</h2>
+        <p class="fs-5">Akses informasi harga pangan kapan saja dan di mana saja, baik dari desktop maupun mobile.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <!-- Carousel Controls -->
       <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
@@ -226,7 +233,9 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 <!-- Bootstrap JS Wajib! -->
  <!-- Bootstrap JS agar carousel dan komponen lain aktif -->
+<!-- Bootstrap JavaScript Bundle (Wajib agar Carousel berfungsi) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <!-- Script untuk menginisialisasi carousel -->
@@ -244,7 +253,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
   });
 </script>
-
 
 </body>
 </html>
