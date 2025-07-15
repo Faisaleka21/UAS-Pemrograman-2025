@@ -96,6 +96,7 @@ requireLogin('admin');
     <div class="flex items-center space-x-2 mb-2 md:mb-4 ">
         <i class="fas fa-leaf text-3xl"></i>
         <h1 class="text-3xl font-bold text-gray-800">Sistem Informasi Harga Pangan Desa</h1>
+
       </div>
         <!-- pengguna -->
         <div class="card p-6 mb-6">
@@ -122,6 +123,42 @@ requireLogin('admin');
 
         <div class="card p-6">
             <h2 class="text-xl font-semibold mb-4">Daftar Pengguna</h2>
+            <!-- Input pencarian -->
+                <div class="mb-4">
+    <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+            <i class="fas fa-search"></i>
+        </span>
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Cari nama atau username..." 
+            onkeyup="liveSearch()"
+            class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out bg-white"
+        >
+    </div>
+</div>
+
+                <script>
+                    function liveSearch() {
+                        const input = document.getElementById("searchInput");
+                        const filter = input.value.toLowerCase();
+                        const rows = document.querySelectorAll(".trow");
+
+                        rows.forEach(row => {
+                            const name = row.cells[1].textContent.toLowerCase();
+                            const username = row.cells[2].textContent.toLowerCase();
+
+                            if (name.includes(filter) || username.includes(filter)) {
+                                row.style.display = "";
+                            } else {
+                                row.style.display = "none";
+                            }
+                        });
+                    }
+                </script>
+                <!-- pencarian end -->
+
             <table class="min-w-full table-auto">
                 <thead>
                     <tr class="bg-gray-200">
@@ -199,7 +236,7 @@ requireLogin('admin');
                                                     <label class="block text-sm font-semibold text-gray-700 mb-1">Role</label>
                                                     <select name="role" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500" required>
                                                         <option value="admin" <?php if ($role == 'admin') echo 'selected'; ?>>Admin</option>
-                                                        <option value="user" <?php if ($role == 'user') echo 'selected'; ?>>User</option>
+                                                        <option value="petani" <?php if ($role == 'petani') echo 'selected'; ?>>Petani</option>
                                                     </select>
                                                 </div>
 
@@ -237,6 +274,7 @@ requireLogin('admin');
         </div>
 
     </div>
+    
 
 
 
