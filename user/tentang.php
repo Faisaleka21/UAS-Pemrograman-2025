@@ -111,7 +111,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       <!-- Ilustrasi -->
       <div>
-        <img src="../image/sawah.jpg" alt="Ilustrasi Pertanian" class="w-full rounded-2xl shadow-lg border-4 border-white">
+        <img src="../image/gambar3.jpg" alt="Ilustrasi Pertanian" class="w-full rounded-2xl shadow-lg border-4 border-white">
       </div>
 
       <!-- Konten -->
@@ -160,7 +160,16 @@ while ($row = mysqli_fetch_assoc($result)) {
   </div>
 </section>
 
-
+ <!-- Footer -->
+  <footer class="bg-primary text-white py-8">
+    <div class="max-w-screen-xl mx-auto px-4 text-center">
+      <div class="flex justify-center mb-4 items-center space-x-2">
+        <i class="fas fa-leaf text-2xl"></i>
+        <span class="text-xl font-bold">HargaPangan Desa</span>
+      </div>
+      <p class="text-sm opacity-80">© 2025 HargaPangan Desa. hak cipta dilindungi.</p>
+    </div>
+  </footer>
 
 
 
